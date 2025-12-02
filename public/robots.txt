@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bmstroy.ru/sitemap.xml

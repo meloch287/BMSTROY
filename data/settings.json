@@ -1,0 +1,27 @@
+[
+  {
+    "prices": [
+      {
+        "id": "standard",
+        "name": "Стандарт",
+        "price": 111111,
+        "materials": 7000
+      },
+      {
+        "id": "plus",
+        "name": "Стандарт+",
+        "price": 12600,
+        "materials": 8000
+      },
+      {
+        "id": "premium",
+        "name": "Премиум",
+        "price": 17500,
+        "materials": 10000
+      }
+    ],
+    "phone": "+7 (888) 888-88-89",
+    "email": "info@bmstroy.ru",
+    "address": "Москва, 2й Силикатный проезд, дом 14"
+  }
+]

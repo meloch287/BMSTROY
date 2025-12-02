@@ -1,0 +1,100 @@
+/* Custom Range Slider Styles - Green Theme */
+
+input[type="range"].range-green {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Track - Webkit (Chrome, Safari, Edge) */
+input[type="range"].range-green::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    #7CB342 0%,
+    #7CB342 var(--value, 50%),
+    #D0D0C8 var(--value, 50%),
+    #D0D0C8 100%
+  );
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Track - Firefox */
+input[type="range"].range-green::-moz-range-track {
+  background: #D0D0C8;
+  height: 8px;
+  border-radius: 4px;
+}
+
+input[type="range"].range-green::-moz-range-progress {
+  background: #7CB342;
+  height: 8px;
+  border-radius: 4px;
+}
+
+/* Thumb - Webkit */
+input[type="range"].range-green::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #7CB342;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(124, 179, 66, 0.3);
+  cursor: pointer;
+  margin-top: -6px;
+  transition: all 0.2s ease;
+}
+
+/* Thumb - Firefox */
+input[type="range"].range-green::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #7CB342;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(124, 179, 66, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover state - Webkit */
+input[type="range"].range-green:hover::-webkit-slider-thumb {
+  background: #558B2F;
+  box-shadow: 0 2px 12px rgba(124, 179, 66, 0.5);
+  transform: scale(1.1);
+}
+
+/* Hover state - Firefox */
+input[type="range"].range-green:hover::-moz-range-thumb {
+  background: #558B2F;
+  box-shadow: 0 2px 12px rgba(124, 179, 66, 0.5);
+  transform: scale(1.1);
+}
+
+/* Focus state - Webkit */
+input[type="range"].range-green:focus::-webkit-slider-thumb {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(124, 179, 66, 0.2);
+}
+
+/* Focus state - Firefox */
+input[type="range"].range-green:focus::-moz-range-thumb {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(124, 179, 66, 0.2);
+}
+
+/* Active state - Webkit */
+input[type="range"].range-green:active::-webkit-slider-thumb {
+  background: #558B2F;
+  transform: scale(0.95);
+}
+
+/* Active state - Firefox */
+input[type="range"].range-green:active::-moz-range-thumb {
+  background: #558B2F;
+  transform: scale(0.95);
+}

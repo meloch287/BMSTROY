@@ -1,0 +1,29 @@
+<svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Green house icon with hammer -->
+  <g id="logo">
+    <!-- House outline -->
+    <path d="M40 100L100 40L160 100V180H40V100Z" fill="#7CB342" stroke="#7CB342" stroke-width="8" stroke-linejoin="round"/>
+    
+    <!-- House inner white area -->
+    <path d="M55 110L100 65L145 110V165H55V110Z" fill="white"/>
+    
+    <!-- Hammer shape inside -->
+    <g id="hammer">
+      <!-- Hammer head -->
+      <rect x="75" y="95" width="35" height="15" rx="2" fill="#7CB342"/>
+      <!-- Hammer handle -->
+      <rect x="88" y="105" width="9" height="45" rx="2" fill="#7CB342"/>
+      <!-- Hammer handle bottom -->
+      <ellipse cx="92.5" cy="150" rx="6" ry="4" fill="#7CB342"/>
+    </g>
+    
+    <!-- House base/foundation -->
+    <rect x="35" y="180" width="130" height="15" fill="#7CB342" rx="2"/>
+  </g>
+  
+  <!-- Text: БМСТРОЙ -->
+  <text x="100" y="215" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#2C2C2C" text-anchor="middle">БМСТРОЙ</text>
+  
+  <!-- Text: МАСТЕР -->
+  <text x="100" y="235" font-family="Arial, sans-serif" font-size="16" font-weight="normal" fill="#5A5A5A" text-anchor="middle" letter-spacing="2">МАСТЕР</text>
+</svg>

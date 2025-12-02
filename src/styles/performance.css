@@ -1,0 +1,151 @@
+/* Performance Optimizations for Animations */
+
+/* Use GPU acceleration for animated elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Apply will-change only during animations */
+.animating {
+  will-change: transform, opacity;
+}
+
+.animating-complete {
+  will-change: auto;
+}
+
+/* Optimize transforms */
+.optimize-transform {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Contain layout shifts */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Optimize scroll performance */
+.scroll-optimized {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Prevent layout thrashing */
+.no-layout-shift {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize images */
+.optimized-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Force hardware acceleration for specific animations */
+@keyframes gpu-accelerate {
+  0% {
+    transform: translateZ(0);
+  }
+  100% {
+    transform: translateZ(0);
+  }
+}
+
+.force-gpu {
+  animation: gpu-accelerate 0.001s;
+  transform: translateZ(0);
+}
+
+/* Optimize hover states */
+.hover-optimized {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.hover-optimized:not(:hover) {
+  will-change: auto;
+}
+
+/* Debounce scroll events */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Optimize for 60fps */
+.fps-60 {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent paint on scroll */
+.fixed-optimized {
+  position: fixed;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize text rendering */
+.optimized-text {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Composite layers */
+.composite-layer {
+  transform: translateZ(0);
+  isolation: isolate;
+}
+
+/* Prevent repaints */
+.no-repaint {
+  pointer-events: none;
+}
+
+/* Critical CSS for above-the-fold content */
+.critical-content {
+  content-visibility: visible;
+}
+
+/* Lazy content below the fold */
+.lazy-content {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Optimize animations for mobile */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+}
+
+/* Reduce animations on low-end devices */
+@media (prefers-reduced-data: reduce) {
+  * {
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+  }
+}
+
+/* Battery saving mode */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-panel,
+  .backdrop-blur {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
