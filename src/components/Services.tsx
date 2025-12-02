@@ -1,11 +1,5 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const DEFAULT_SERVICES = [
   {
@@ -104,7 +98,7 @@ export default function Services() {
             <div className="sticky top-32">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-16 h-[1px] bg-brand-green"></div>
-                <span className="text-brand-green font-bold tracking-widest uppercase text-sm">Экспертиза</span>
+                <span className="text-brand-green-text font-bold tracking-widest uppercase text-sm">Экспертиза</span>
               </div>
               <h2 className="text-5xl md:text-6xl font-bold text-text-primary mb-8 leading-tight">
                 Наши <br/><span className="text-gradient-main">Услуги</span>

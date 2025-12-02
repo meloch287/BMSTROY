@@ -148,10 +148,10 @@ export default function ContactSection() {
             </div>
 
             <div className="flex gap-4 mt-8">
-              <a href="https://wa.me/79990000000" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+              <a href="https://wa.me/79990000000" target="_blank" rel="noopener noreferrer" aria-label="Написать в WhatsApp" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                 <MessageCircle size={20} />
               </a>
-              <a href="https://t.me/bmstroy" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
+              <a href="https://t.me/bmstroy" target="_blank" rel="noopener noreferrer" aria-label="Написать в Telegram" className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
                 <Send size={20} />
               </a>
             </div>
@@ -164,6 +164,7 @@ export default function ContactSection() {
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
+                title="Карта проезда до офиса компании БМСтрой"
               />
             </div>
           </div>
@@ -174,8 +175,9 @@ export default function ContactSection() {
             {!sent ? (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">Ваше имя *</label>
+                  <label htmlFor="contactName" className="block text-sm font-medium text-text-primary mb-2">Ваше имя *</label>
                   <input
+                    id="contactName"
                     type="text"
                     value={formData.name}
                     onChange={(e) => {
@@ -189,8 +191,9 @@ export default function ContactSection() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">Телефон *</label>
+                  <label htmlFor="contactPhone" className="block text-sm font-medium text-text-primary mb-2">Телефон *</label>
                   <input
+                    id="contactPhone"
                     type="tel"
                     value={formData.phone}
                     onChange={handlePhoneChange}
@@ -201,8 +204,9 @@ export default function ContactSection() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">Тип ремонта</label>
+                  <label htmlFor="repairType" className="block text-sm font-medium text-text-primary mb-2">Тип ремонта</label>
                   <select
+                    id="repairType"
                     value={formData.repairType}
                     onChange={(e) => setFormData({ ...formData, repairType: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-brand-green outline-none transition-colors bg-white"
@@ -215,8 +219,9 @@ export default function ContactSection() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-text-primary mb-2">Комментарий</label>
+                  <label htmlFor="contactComment" className="block text-sm font-medium text-text-primary mb-2">Комментарий</label>
                   <textarea
+                    id="contactComment"
                     value={formData.comment}
                     onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                     placeholder="Опишите ваш проект..."
@@ -234,7 +239,7 @@ export default function ContactSection() {
                     className="mt-1 w-4 h-4 accent-brand-green"
                   />
                   <label htmlFor="agree" className="text-sm text-text-secondary">
-                    Согласен с <a href="#" className="text-brand-green hover:underline">политикой обработки персональных данных</a>
+                    Согласен с <a href="#" className="text-brand-green-text hover:underline">политикой обработки персональных данных</a>
                   </label>
                 </div>
 
@@ -249,7 +254,7 @@ export default function ContactSection() {
             ) : (
               <div className="text-center py-12">
                 <div className="text-5xl mb-4">🎉</div>
-                <h3 className="text-2xl font-bold text-brand-green mb-2">Заявка отправлена!</h3>
+                <h3 className="text-2xl font-bold text-brand-green-text mb-2">Заявка отправлена!</h3>
                 <p className="text-text-secondary">Мы свяжемся с вами в ближайшее время</p>
                 <button onClick={() => setSent(false)} className="mt-6 text-brand-green hover:underline">
                   Отправить ещё

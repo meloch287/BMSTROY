@@ -27,7 +27,7 @@ export default function ChatWidget() {
                 <h4 className="font-bold">Напишите нам</h4>
                 <p className="text-sm opacity-90">Ответим в течение 5 минут</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1 rounded">
+              <button onClick={() => setIsOpen(false)} aria-label="Закрыть окно чата" className="hover:bg-white/20 p-1 rounded">
                 <X size={20} />
               </button>
             </div>
@@ -39,6 +39,7 @@ export default function ChatWidget() {
                 <input
                   type="text"
                   placeholder="Ваше имя"
+                  aria-label="Ваше имя"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
@@ -46,6 +47,7 @@ export default function ChatWidget() {
                 />
                 <textarea
                   placeholder="Ваш вопрос..."
+                  aria-label="Ваш вопрос"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
@@ -62,7 +64,7 @@ export default function ChatWidget() {
             ) : (
               <div className="text-center py-6">
                 <div className="text-4xl mb-3">✓</div>
-                <p className="font-bold text-brand-green">Сообщение отправлено!</p>
+                <p className="font-bold text-brand-green-text">Сообщение отправлено!</p>
                 <p className="text-sm text-gray-500">Мы скоро ответим</p>
               </div>
             )}
@@ -72,6 +74,7 @@ export default function ChatWidget() {
       
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? 'Закрыть чат' : 'Открыть чат'}
         className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
           isOpen ? 'bg-gray-600 rotate-90' : 'bg-brand-green hover:bg-brand-green-dark'
         }`}

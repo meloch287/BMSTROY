@@ -119,7 +119,7 @@ export default function Promos() {
               <h3 className="text-xl font-bold text-text-primary mb-3">{promo.title}</h3>
               <p className="text-text-secondary mb-4">{promo.desc}</p>
               
-              <div className="text-sm text-brand-green font-semibold mb-6">
+              <div className="text-sm text-brand-green-text font-semibold mb-6">
                 Действует {promo.validity}
               </div>
               
@@ -191,7 +191,7 @@ export default function Promos() {
             ) : (
               <div className="text-center py-6">
                 <div className="text-5xl mb-4">🎉</div>
-                <h4 className="text-xl font-bold text-brand-green mb-2">Заявка отправлена!</h4>
+                <h4 className="text-xl font-bold text-brand-green-text mb-2">Заявка отправлена!</h4>
                 <p className="text-text-secondary mb-4">Мы свяжемся с вами в ближайшее время</p>
                 <button
                   onClick={() => setModalOpen(false)}

@@ -1,15 +1,16 @@
 'use client';
-import { useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { useEffect, useRef } from 'react';
 
 export default function ScrollProgress() {
+  const cleanupRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Lazy load GSAP to not block initial render
+    const loadGsap = async () => {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
       const progressBar = document.getElementById('progress-bar');
       if (!progressBar) return;
 
@@ -26,11 +27,18 @@ export default function ScrollProgress() {
           invalidateOnRefresh: true,
         }
       });
-    }, 100);
+
+      cleanupRef.current = () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    };
+
+    // Delay loading to prioritize LCP
+    const timer = setTimeout(loadGsap, 200);
 
     return () => {
       clearTimeout(timer);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      cleanupRef.current?.();
     };
   }, []);
 

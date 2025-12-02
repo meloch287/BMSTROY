@@ -209,9 +209,9 @@ export default function Calculator() {
                 <div className="grid grid-cols-3 gap-3">
                   {packages.map((pkg) => (
                     <div key={pkg.id} onClick={() => setSelectedPack(pkg)} className={`cursor-pointer p-4 rounded-xl border text-center transition-all relative ${selectedPack.id === pkg.id ? 'border-brand-green bg-brand-green/10 shadow-md' : 'border-gray-200 bg-white hover:border-brand-green/50'}`}>
-                      {pkg.popular && <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-green text-white text-[10px] px-2 py-0.5 rounded-full">Популярный</div>}
+                      {pkg.popular && <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-green-dark text-white text-[10px] px-2 py-0.5 rounded-full font-medium">Популярный</div>}
                       <h3 className="font-bold text-text-primary text-sm mb-1">{pkg.name}</h3>
-                      <p className="text-brand-green font-bold text-xs">{pkg.priceWork.toLocaleString()} ₽/м²</p>
+                      <p className="text-brand-green-text font-bold text-xs">{pkg.priceWork.toLocaleString()} ₽/м²</p>
                     </div>
                   ))}
                 </div>
@@ -222,17 +222,17 @@ export default function Calculator() {
                   {selectedPack.features.map((f) => <span key={f} className="text-xs bg-white px-3 py-1 rounded-full border border-gray-200 text-text-primary">{f}</span>)}
                 </div>
               </div>
-              <div className="bg-brand-green rounded-2xl p-6 text-white">
+              <div className="bg-brand-green-dark rounded-2xl p-6 text-white">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <p className="text-white/70 text-sm">Ориентировочная стоимость</p>
+                    <p className="text-white text-sm">Ориентировочная стоимость</p>
                     <p className="text-3xl md:text-4xl font-bold">{totalPrice.toLocaleString()} ₽</p>
                   </div>
-                  {hasDiscount && <div className="bg-white/20 px-3 py-1 rounded-full text-sm font-bold">-10%</div>}
+                  {hasDiscount && <div className="bg-white/30 px-3 py-1 rounded-full text-sm font-bold">-10%</div>}
                 </div>
-                <div className="space-y-2 text-sm border-t border-white/20 pt-4 mb-4">
-                  <div className="flex justify-between"><span className="text-white/70">Работы ({selectedPack.name})</span><span className="font-semibold">{workPrice.toLocaleString()} ₽</span></div>
-                  <div className="flex justify-between"><span className="text-white/70">Материалы</span><span className="font-semibold">{matPrice.toLocaleString()} ₽</span></div>
+                <div className="space-y-2 text-sm border-t border-white/30 pt-4 mb-4">
+                  <div className="flex justify-between"><span className="text-white">Работы ({selectedPack.name})</span><span className="font-semibold">{workPrice.toLocaleString()} ₽</span></div>
+                  <div className="flex justify-between"><span className="text-white">Материалы</span><span className="font-semibold">{matPrice.toLocaleString()} ₽</span></div>
                 </div>
                 <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="w-full bg-white text-brand-green py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors">Получить точную смету</button>
               </div>

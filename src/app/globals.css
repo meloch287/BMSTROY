@@ -2,13 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom font for БМСТРОЙ logo */
+/* Custom font for БМСТРОЙ logo - оптимизированный subset */
 @font-face {
   font-family: 'HYWenHei';
-  src: url('/fonts/HYWenHei.ttf') format('truetype');
+  src: url('/fonts/HYWenHei.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: optional; /* Не блокирует рендеринг - показывает fallback если шрифт не загружен за 100ms */
+  unicode-range: U+0000-00FF, U+0400-04FF, U+2000-206F; /* Латиница + Кириллица */
 }
 
 :root {
@@ -19,6 +20,7 @@
   --brand-green: #7CB342;
   --brand-green-dark: #558B2F;
   --brand-green-light: #9CCC65;
+  --brand-green-text: #3D6B1C; /* Accessible text color (5.5:1 contrast on white) */
   --text-primary: #2C2C2C;
   --text-secondary: #5A5A5A;
 }

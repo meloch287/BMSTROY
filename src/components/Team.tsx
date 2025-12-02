@@ -44,7 +44,7 @@ export default function Team() {
                         />
                     </div>
                     <h3 className="text-xl font-bold text-text-primary mb-1">{t.name}</h3>
-                    <div className="text-brand-green text-sm font-bold uppercase tracking-wider mb-1">{t.role}</div>
+                    <div className="text-brand-green-text text-sm font-bold uppercase tracking-wider mb-1">{t.role}</div>
                     <div className="text-text-secondary text-xs">{t.exp}</div>
                 </div>
             ))}

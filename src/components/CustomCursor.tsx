@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
+  const gsapRef = useRef<typeof import('gsap').gsap | null>(null);
 
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -12,24 +12,33 @@ export default function CustomCursor() {
     const cursor = cursorRef.current;
     const follower = followerRef.current;
 
-    const moveCursor = (e: MouseEvent) => {
-      gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
-      gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.2, ease: "power2.out" });
+    // Lazy load GSAP
+    const init = async () => {
+      const { gsap } = await import('gsap');
+      gsapRef.current = gsap;
+
+      const moveCursor = (e: MouseEvent) => {
+        gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+        gsap.to(follower, { x: e.clientX, y: e.clientY, duration: 0.2, ease: "power2.out" });
+      };
+
+      const hoverLinks = document.querySelectorAll('a, button, input, select, textarea, .cursor-pointer');
+      
+      hoverLinks.forEach((link) => {
+        link.addEventListener('mouseenter', () => {
+          gsap.to(follower, { scale: 2.5, backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'transparent' });
+        });
+        link.addEventListener('mouseleave', () => {
+          gsap.to(follower, { scale: 1, backgroundColor: 'transparent', borderColor: '#22c55e' });
+        });
+      });
+
+      window.addEventListener('mousemove', moveCursor);
     };
 
-    const hoverLinks = document.querySelectorAll('a, button, input, select, textarea, .cursor-pointer');
-    
-    hoverLinks.forEach((link) => {
-      link.addEventListener('mouseenter', () => {
-        gsap.to(follower, { scale: 2.5, backgroundColor: 'rgba(34, 197, 94, 0.2)', borderColor: 'transparent' });
-      });
-      link.addEventListener('mouseleave', () => {
-        gsap.to(follower, { scale: 1, backgroundColor: 'transparent', borderColor: '#22c55e' });
-      });
-    });
-
-    window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
+    // Delay to prioritize LCP
+    const timer = setTimeout(init, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (

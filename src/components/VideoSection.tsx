@@ -26,6 +26,7 @@ export default function VideoSection() {
                     <img src={activeVideo.thumb} loading="lazy" width={1280} height={720} className="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-500" alt="Video Thumb"/>
                     <button 
                         onClick={() => setIsPlaying(true)}
+                        aria-label="Воспроизвести видео"
                         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-brand-green/90 rounded-full flex items-center justify-center pl-2 hover:scale-110 hover:bg-brand-green transition-all shadow-[0_0_30px_rgba(124,179,66,0.5)] animate-pulse-glow"
                     >
                         <Play size={40} fill="white" className="text-white"/>
@@ -41,6 +42,7 @@ export default function VideoSection() {
                     className="w-full h-full" 
                     allow="autoplay; encrypted-media" 
                     allowFullScreen
+                    title={activeVideo.title}
                 ></iframe>
             )}
         </div>

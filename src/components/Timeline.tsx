@@ -1,12 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { prefersReducedMotion } from '@/utils/accessibility';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const STEPS = [
   { num: '01', title: 'Заявка', desc: 'Оставьте заявку на сайте или позвоните. Менеджер свяжется в течение 15 минут.', icon: '📝' },
@@ -18,6 +12,7 @@ const STEPS = [
 export default function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (!containerRef.current || !lineRef.current) return;
@@ -29,23 +24,38 @@ export default function Timeline() {
       return;
     }
 
-    gsap.fromTo(
-      line,
-      { height: '0%' },
-      {
-        height: '100%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: 1,
-        },
-      }
-    );
+    // Lazy load GSAP
+    const loadGsap = async () => {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.fromTo(
+        line,
+        { height: '0%' },
+        {
+          height: '100%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top center',
+            end: 'bottom center',
+            scrub: 1,
+          },
+        }
+      );
+
+      cleanupRef.current = () => {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    };
+
+    // Delay to prioritize LCP
+    const timer = setTimeout(loadGsap, 300);
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      clearTimeout(timer);
+      cleanupRef.current?.();
     };
   }, []);
   return (

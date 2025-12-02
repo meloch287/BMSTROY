@@ -10,7 +10,8 @@ const config: Config = {
     extend: {
       fontFamily: { 
         sans: ['Manrope', 'sans-serif'],
-        logo: ['HYWenHei', 'sans-serif'],
+        // HYWenHei с системными fallback для мгновенного LCP
+        logo: ['HYWenHei', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         plaster: {
@@ -22,6 +23,7 @@ const config: Config = {
           green: '#7CB342',         // Primary brand green (from logo)
           'green-dark': '#558B2F',  // Hover/active state
           'green-light': '#9CCC65', // Light accent
+          'green-text': '#3D6B1C',  // Accessible text color (5.5:1 contrast on white)
         },
         text: {
           primary: '#2C2C2C',   // Dark gray for main text
@@ -31,6 +33,7 @@ const config: Config = {
         'brand-green': '#7CB342',
         'brand-green-dark': '#558B2F',
         'brand-green-light': '#9CCC65',
+        'brand-green-text': '#3D6B1C', // Accessible text color (5.5:1 contrast)
       },
       animation: {
         'pulse-glow': 'pulse-glow 3s infinite',

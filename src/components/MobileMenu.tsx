@@ -1,7 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, Phone, MessageCircle, ChevronDown, Home } from 'lucide-react';
-import { gsap } from 'gsap';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -22,17 +21,29 @@ export default function MobileMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const isHomePage = pathname === '/';
+  const gsapRef = useRef<typeof import('gsap').gsap | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
+    // Lazy load GSAP only when menu is first opened
+    const animate = async () => {
+      if (!gsapRef.current) {
+        const { gsap } = await import('gsap');
+        gsapRef.current = gsap;
+      }
+      const gsap = gsapRef.current;
+      
+      if (isOpen) {
         document.body.style.overflow = 'hidden';
         gsap.to('#mobile-menu-bg', { opacity: 1, duration: 0.3 });
         gsap.to('#mobile-menu-content', { y: 0, duration: 0.4, ease: 'power3.out' });
-    } else {
+      } else {
         document.body.style.overflow = '';
         gsap.to('#mobile-menu-bg', { opacity: 0, duration: 0.3 });
         gsap.to('#mobile-menu-content', { y: '100%', duration: 0.3, ease: 'power3.in' });
-    }
+      }
+    };
+    
+    animate();
   }, [isOpen]);
 
   const handleNavClick = (href: string, isPage?: boolean) => {
@@ -110,7 +121,7 @@ export default function MobileMenu() {
                     onClick={() => item.submenu ? setExpandedItem(expandedItem === item.label ? null : item.label) : handleNavClick(item.href, item.isPage)}
                     className={`w-full flex items-center justify-between p-4 rounded-xl font-semibold transition-colors ${
                       pathname === item.href 
-                        ? 'bg-brand-green/20 text-brand-green' 
+                        ? 'bg-brand-green/20 text-brand-green-text' 
                         : 'bg-gray-50 text-text-primary hover:bg-brand-green/10'
                     }`}
                   >

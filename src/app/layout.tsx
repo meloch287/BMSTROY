@@ -17,7 +17,7 @@ const manrope = Manrope({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  maximumScale: 5,
   themeColor: "#020617",
 };
 
@@ -91,11 +91,12 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`scroll-smooth ${manrope.variable}`}>
       <head>
+        {/* Preload критического шрифта для LCP */}
         <link
           rel="preload"
-          href="/fonts/HYWenHei.ttf"
+          href="/fonts/HYWenHei.woff2"
           as="font"
-          type="font/ttf"
+          type="font/woff2"
           crossOrigin="anonymous"
         />
         <script

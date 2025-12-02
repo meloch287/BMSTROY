@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import Image from 'next/image';
 import { ArrowUpRight, X, MapPin, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
@@ -137,21 +138,14 @@ export default function Portfolio() {
                   onClick={() => setSelectedProject(project)}
                   className="group relative aspect-[4/3] overflow-hidden rounded-3xl cursor-pointer bg-gray-200 border-2 border-transparent hover:border-brand-green shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
               >
-                <img 
+                <Image 
                   src={project.cover || project.img || '/uploads/1764611922746-1__4_.jpeg'} 
                   alt={project.title} 
                   loading="lazy"
-                  width={800}
-                  height={600}
-                  style={{ minHeight: '100%', minWidth: '100%' }}
+                  width={400}
+                  height={300}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    if (!target.dataset.fallback) {
-                      target.dataset.fallback = 'true';
-                      target.src = '/uploads/1764611922746-1__4_.jpeg';
-                    }
-                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
@@ -251,8 +245,8 @@ export default function Portfolio() {
                     <div className="p-5">
                         <div className="flex gap-2 mb-3 flex-wrap">
                             {Array.isArray(selectedProject.tags) ? selectedProject.tags.map((t: string) => (
-                                <span key={t} className="text-xs font-bold uppercase bg-brand-green/10 text-brand-green px-2 py-1 rounded-full">{t}</span>
-                            )) : <span className="text-xs font-bold uppercase bg-brand-green/10 text-brand-green px-2 py-1 rounded-full">{selectedProject.tags}</span>}
+                                <span key={t} className="text-xs font-bold uppercase bg-brand-green/10 text-brand-green-text px-2 py-1 rounded-full">{t}</span>
+                            )) : <span className="text-xs font-bold uppercase bg-brand-green/10 text-brand-green-text px-2 py-1 rounded-full">{selectedProject.tags}</span>}
                         </div>
                         
                         <h2 className="text-xl font-bold text-text-primary mb-3">{selectedProject.title}</h2>
@@ -344,8 +338,8 @@ export default function Portfolio() {
                         <div className="flex-1 overflow-y-auto pr-2">
                             <div className="flex gap-2 mb-4 flex-wrap">
                                 {Array.isArray(selectedProject.tags) ? selectedProject.tags.map((t: string) => (
-                                    <span key={t} className="text-xs font-bold uppercase bg-gradient-to-r from-brand-green/20 to-brand-green/10 text-brand-green px-3 py-1.5 rounded-full border border-brand-green/20">{t}</span>
-                                )) : <span className="text-xs font-bold uppercase bg-gradient-to-r from-brand-green/20 to-brand-green/10 text-brand-green px-3 py-1.5 rounded-full border border-brand-green/20">{selectedProject.tags}</span>}
+                                    <span key={t} className="text-xs font-bold uppercase bg-gradient-to-r from-brand-green/20 to-brand-green/10 text-brand-green-text px-3 py-1.5 rounded-full border border-brand-green/20">{t}</span>
+                                )) : <span className="text-xs font-bold uppercase bg-gradient-to-r from-brand-green/20 to-brand-green/10 text-brand-green-text px-3 py-1.5 rounded-full border border-brand-green/20">{selectedProject.tags}</span>}
                             </div>
                             
                             <h2 className="text-3xl font-bold text-text-primary mb-5">{selectedProject.title}</h2>
