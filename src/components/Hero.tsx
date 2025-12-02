@@ -1,25 +1,10 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    // Lazy load GSAP only after initial render to not block LCP
-    const loadGsap = async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-      
-      gsap.to('.hero-bg-img', {
-        yPercent: 50, ease: 'none',
-        scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
-      });
-    };
-    
-    // Delay GSAP loading to prioritize LCP
-    requestIdleCallback ? requestIdleCallback(loadGsap) : setTimeout(loadGsap, 100);
-  }, []);
+  // GSAP удален для улучшения TBT - простой parallax не критичен для UX
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);

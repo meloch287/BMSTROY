@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import { ChevronDown } from 'lucide-react';
-import { useSettings } from '@/hooks/useSettings';
 
 const MENU_ITEMS = [
   {
@@ -36,9 +35,24 @@ const MENU_ITEMS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const { settings, isLoading } = useSettings();
+  const [phone, setPhone] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+
+  // Загружаем настройки с API
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        setPhone(data?.phone || '+7-888-888-88-88');
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setPhone('+7-888-888-88-88');
+        setIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -104,15 +118,15 @@ export default function Header() {
         </nav>
 
         {isLoading ? (
-          <div className="hidden md:inline-block px-6 py-3">
-            <div className="h-5 w-36 bg-gray-200 rounded-full animate-pulse" />
+          <div className="hidden md:inline-block px-6 py-3 rounded-full">
+            <div className="h-5 w-32 bg-gray-200 rounded-full animate-pulse" />
           </div>
         ) : (
           <a 
-            href={`tel:${settings?.phone?.replace(/\D/g, '') || ''}`}
+            href={`tel:${phone?.replace(/\D/g, '') || ''}`}
             className="hidden md:inline-block btn-glass px-6 py-3 rounded-full text-sm font-bold hover:bg-brand-green hover:text-white transition-all"
           >
-            {settings?.phone}
+            {phone}
           </a>
         )}
       </div>

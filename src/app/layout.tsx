@@ -91,6 +91,9 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`scroll-smooth ${manrope.variable}`}>
       <head>
+        {/* DNS prefetch для внешних ресурсов */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         {/* Preload критического шрифта для LCP */}
         <link
           rel="preload"
@@ -99,6 +102,14 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
+        {/* Critical CSS для мгновенного рендеринга above-the-fold */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          body{background-color:#E8E8E0;margin:0}
+          .bg-plaster{background-color:#E8E8E0}
+          .text-text-primary{color:#2C2C2C}
+          .text-brand-green{color:#4A7C23}
+          .btn-gradient{background-image:linear-gradient(135deg,#4A7C23 0%,#5A8C33 100%);color:#fff}
+        `}} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

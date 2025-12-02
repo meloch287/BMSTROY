@@ -20,20 +20,20 @@ const config: Config = {
           dark: '#D0D0C8',     // Darker plaster shade
         },
         brand: {
-          green: '#7CB342',         // Primary brand green (from logo)
-          'green-dark': '#558B2F',  // Hover/active state
-          'green-light': '#9CCC65', // Light accent
-          'green-text': '#3D6B1C',  // Accessible text color (5.5:1 contrast on white)
+          green: '#4A7C23',         // Primary brand green - WCAG AA compliant
+          'green-dark': '#3D6B1C',  // Hover/active state - WCAG AA compliant
+          'green-light': '#7CB342', // Light accent
+          'green-text': '#2D5A12',  // Accessible text color (7:1 contrast on white)
         },
         text: {
           primary: '#2C2C2C',   // Dark gray for main text
           secondary: '#5A5A5A', // Medium gray for secondary text
         },
-        // Keep for backward compatibility during migration
-        'brand-green': '#7CB342',
-        'brand-green-dark': '#558B2F',
-        'brand-green-light': '#9CCC65',
-        'brand-green-text': '#3D6B1C', // Accessible text color (5.5:1 contrast)
+        // Keep for backward compatibility during migration - WCAG AA compliant
+        'brand-green': '#4A7C23',
+        'brand-green-dark': '#3D6B1C',
+        'brand-green-light': '#7CB342',
+        'brand-green-text': '#2D5A12', // Accessible text color (7:1 contrast)
       },
       animation: {
         'pulse-glow': 'pulse-glow 3s infinite',

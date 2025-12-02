@@ -5,6 +5,59 @@ import Image from 'next/image';
 import { ArrowUpRight, X, MapPin, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
+// Компонент для плавной загрузки изображений (Next.js Image)
+const FadeImage = ({ src, alt, className = '', ...props }: any) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const fallbackSrc = '/uploads/1764611922746-1__4_.jpeg';
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <div className={`absolute inset-0 bg-gray-200 transition-opacity duration-500 ${loaded ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+      </div>
+      <Image
+        src={error ? fallbackSrc : src}
+        alt={alt}
+        onLoad={() => setLoaded(true)}
+        onError={() => { setError(true); setLoaded(true); }}
+        className={`transition-opacity duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+        {...props}
+      />
+    </div>
+  );
+};
+
+// Компонент для плавной загрузки изображений в модалке (обычный img)
+const FadeModalImage = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const fallbackSrc = '/uploads/1764611922746-1__4_.jpeg';
+
+  // Сбрасываем состояние при смене src
+  useEffect(() => {
+    setLoaded(false);
+    setError(false);
+  }, [src]);
+
+  return (
+    <>
+      <div className={`absolute inset-0 bg-gray-800 transition-opacity duration-500 ${loaded ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+      </div>
+      <img 
+        src={error ? fallbackSrc : src} 
+        width={800}
+        height={600}
+        className={`transition-opacity duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+        alt={alt}
+        onLoad={() => setLoaded(true)}
+        onError={() => { setError(true); setLoaded(true); }}
+      />
+    </>
+  );
+};
+
 export default function Portfolio() {
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedProject, setSelectedProject] = useState<any>(null);
@@ -138,7 +191,7 @@ export default function Portfolio() {
                   onClick={() => setSelectedProject(project)}
                   className="group relative aspect-[4/3] overflow-hidden rounded-3xl cursor-pointer bg-gray-200 border-2 border-transparent hover:border-brand-green shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
               >
-                <Image 
+                <FadeImage 
                   src={project.cover || project.img || '/uploads/1764611922746-1__4_.jpeg'} 
                   alt={project.title} 
                   loading="lazy"
@@ -196,15 +249,10 @@ export default function Portfolio() {
                           const images = getProjectImages(selectedProject);
                           return (
                             <>
-                              <img 
+                              <FadeModalImage 
                                 src={images[currentImageIndex]} 
-                                width={800}
-                                height={600}
-                                className="w-full h-full object-contain transition-opacity duration-300" 
+                                className="w-full h-full object-contain" 
                                 alt={selectedProject.title}
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).src = '/uploads/1764611922746-1__4_.jpeg';
-                                }}
                               />
                               {images.length > 1 && (
                                 <>
@@ -286,15 +334,10 @@ export default function Portfolio() {
                           const images = getProjectImages(selectedProject);
                           return (
                             <>
-                              <img 
+                              <FadeModalImage 
                                 src={images[currentImageIndex]} 
-                                width={800}
-                                height={600}
-                                className="w-full h-full object-contain transition-all duration-300" 
+                                className="w-full h-full object-contain" 
                                 alt={selectedProject.title}
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).src = '/uploads/1764611922746-1__4_.jpeg';
-                                }}
                               />
                               {images.length > 1 && (
                                 <>

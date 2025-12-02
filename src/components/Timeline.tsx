@@ -1,6 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
-import { prefersReducedMotion } from '@/utils/accessibility';
+import { useEffect, useRef, useState } from 'react';
 
 const STEPS = [
   { num: '01', title: 'Заявка', desc: 'Оставьте заявку на сайте или позвоните. Менеджер свяжется в течение 15 минут.', icon: '📝' },
@@ -11,52 +10,41 @@ const STEPS = [
 
 export default function Timeline() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const cleanupRef = useRef<(() => void) | null>(null);
+  const [lineHeight, setLineHeight] = useState(0);
 
   useEffect(() => {
-    if (!containerRef.current || !lineRef.current) return;
+    if (!containerRef.current) return;
 
-    const line = lineRef.current;
-
-    if (prefersReducedMotion()) {
-      line.style.height = '100%';
-      return;
-    }
-
-    // Lazy load GSAP
-    const loadGsap = async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.fromTo(
-        line,
-        { height: '0%' },
-        {
-          height: '100%',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top center',
-            end: 'bottom center',
-            scrub: 1,
-          },
-        }
-      );
-
-      cleanupRef.current = () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
+    // Используем нативный IntersectionObserver вместо GSAP для производительности
+    let ticking = false;
+    
+    const updateLine = () => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const containerTop = rect.top;
+      const containerHeight = rect.height;
+      
+      // Вычисляем прогресс скролла через секцию
+      const start = windowHeight / 2;
+      const progress = Math.max(0, Math.min(1, (start - containerTop) / containerHeight));
+      
+      setLineHeight(progress * 100);
+      ticking = false;
     };
 
-    // Delay to prioritize LCP
-    const timer = setTimeout(loadGsap, 300);
-
-    return () => {
-      clearTimeout(timer);
-      cleanupRef.current?.();
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateLine);
+        ticking = true;
+      }
     };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateLine(); // Initial call
+
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
   return (
     <section id="steps" className="py-24 relative z-10 bg-plaster-light">
@@ -67,9 +55,8 @@ export default function Timeline() {
           {/* Линия таймлайна - мобильная */}
           <div className="md:hidden absolute left-[23px] top-6 bottom-6 w-[3px] bg-brand-green/20"></div>
           <div 
-            ref={lineRef}
-            className="md:hidden absolute left-[23px] top-6 w-[3px] bg-brand-green shadow-[0_0_10px_rgba(124,179,66,0.5)]"
-            style={{ height: '0%' }}
+            className="md:hidden absolute left-[23px] top-6 w-[3px] bg-brand-green shadow-[0_0_10px_rgba(124,179,66,0.5)] transition-[height] duration-100 ease-out"
+            style={{ height: `${lineHeight}%` }}
           ></div>
           
           {/* Линия таймлайна - десктоп */}

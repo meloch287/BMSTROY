@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import { useSettings } from '@/hooks/useSettings';
 
 const STATS = [
     { num: 150, label: 'Проектов сдано', suffix: '+' },
@@ -9,11 +8,32 @@ const STATS = [
     { num: 98, label: 'Довольных клиентов', suffix: '%' },
 ];
 
+interface Settings {
+  phone?: string;
+  email?: string;
+  address?: string;
+}
+
 export default function Footer() {
   const containerRef = useRef(null);
   const [animatedStats, setAnimatedStats] = useState([0, 0, 0]);
   const hasAnimated = useRef(false);
-  const { settings, isLoading } = useSettings();
+  const [settings, setSettings] = useState<Settings | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Загружаем настройки с API
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        setSettings(data || { phone: '+7-888-888-88-88', email: 'info@bmstroy.ru', address: 'Москва' });
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setSettings({ phone: '+7-888-888-88-88', email: 'info@bmstroy.ru', address: 'Москва' });
+        setIsLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || hasAnimated.current) return;

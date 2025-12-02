@@ -17,10 +17,11 @@
   --plaster-light: #F5F5F0;
   --plaster-base: #E8E8E0;
   --plaster-dark: #D0D0C8;
-  --brand-green: #7CB342;
-  --brand-green-dark: #558B2F;
-  --brand-green-light: #9CCC65;
-  --brand-green-text: #3D6B1C; /* Accessible text color (5.5:1 contrast on white) */
+  /* Обновленные цвета для лучшего контраста (WCAG AA) */
+  --brand-green: #4A7C23; /* Темнее для контраста 4.5:1 с белым */
+  --brand-green-dark: #3D6B1C; /* Темнее для контраста 4.5:1 с белым */
+  --brand-green-light: #7CB342;
+  --brand-green-text: #2D5A12; /* Accessible text color (7:1 contrast on white) */
   --text-primary: #2C2C2C;
   --text-secondary: #5A5A5A;
 }
@@ -41,7 +42,7 @@ select::placeholder {
   opacity: 1;
 }
 
-/* Plaster texture background - rough, uneven surface */
+/* Plaster texture background - упрощенный для мобильных */
 body::before {
   content: '';
   position: fixed;
@@ -51,60 +52,61 @@ body::before {
   height: 100%;
   z-index: -1;
   background-color: #E8E8E0;
-  background-image: 
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cfilter id='roughPlaster'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='6' seed='42' /%3E%3CfeDisplacementMap in='SourceGraphic' scale='15' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%23E8E8E0' /%3E%3Crect width='100%25' height='100%25' filter='url(%23roughPlaster)' opacity='0.25' fill='%23D0D0C8' /%3E%3C/svg%3E");
-  background-size: 800px 800px;
   pointer-events: none;
 }
 
-/* Plaster irregularities - patches and uneven areas */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-image: 
-    radial-gradient(ellipse at 15% 25%, rgba(208, 208, 200, 0.6) 0%, transparent 35%),
-    radial-gradient(ellipse at 75% 15%, rgba(245, 245, 240, 0.7) 0%, transparent 30%),
-    radial-gradient(ellipse at 85% 65%, rgba(220, 220, 210, 0.5) 0%, transparent 40%),
-    radial-gradient(ellipse at 35% 75%, rgba(200, 200, 190, 0.6) 0%, transparent 38%),
-    radial-gradient(ellipse at 60% 45%, rgba(235, 235, 225, 0.5) 0%, transparent 32%),
-    radial-gradient(ellipse at 25% 55%, rgba(215, 215, 205, 0.4) 0%, transparent 28%);
-  pointer-events: none;
-}
-
-/* Gradient text with green tones */
-.text-gradient-main {
-  background: linear-gradient(to right, #7CB342, #9CCC65, #558B2F);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% auto;
-  animation: shine 4s linear infinite;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
+/* Plaster irregularities - только на desktop для производительности */
+@media (min-width: 768px) {
+  body::before {
+    background-image: 
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cfilter id='roughPlaster'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' seed='42' /%3E%3CfeDisplacementMap in='SourceGraphic' scale='10' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%23E8E8E0' /%3E%3Crect width='100%25' height='100%25' filter='url(%23roughPlaster)' opacity='0.2' fill='%23D0D0C8' /%3E%3C/svg%3E");
+    background-size: 800px 800px;
+  }
+  
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: 
+      radial-gradient(ellipse at 15% 25%, rgba(208, 208, 200, 0.4) 0%, transparent 35%),
+      radial-gradient(ellipse at 75% 15%, rgba(245, 245, 240, 0.5) 0%, transparent 30%),
+      radial-gradient(ellipse at 85% 65%, rgba(220, 220, 210, 0.3) 0%, transparent 40%);
+    pointer-events: none;
   }
 }
 
-/* Subtle green mesh gradient overlay */
+/* Gradient text with green tones - статичный для лучшей производительности */
+.text-gradient-main {
+  background: linear-gradient(to right, #4A7C23, #7CB342, #3D6B1C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Subtle green mesh gradient overlay - только desktop */
 .mesh-bg {
-  position: fixed;
-  width: 100vw; 
-  height: 100vh; 
-  top: 0; 
-  left: 0; 
-  z-index: -1; 
-  filter: blur(120px); 
-  pointer-events: none; 
-  opacity: 0.08;
-  background: radial-gradient(at 20% 30%, hsla(88, 50%, 53%, 0.3) 0, transparent 50%), 
-              radial-gradient(at 80% 20%, hsla(88, 50%, 63%, 0.2) 0, transparent 50%), 
-              radial-gradient(at 50% 80%, hsla(88, 50%, 43%, 0.25) 0, transparent 50%);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mesh-bg {
+    display: block;
+    position: fixed;
+    width: 100vw; 
+    height: 100vh; 
+    top: 0; 
+    left: 0; 
+    z-index: -1; 
+    filter: blur(120px); 
+    pointer-events: none; 
+    opacity: 0.06;
+    background: radial-gradient(at 20% 30%, hsla(88, 50%, 53%, 0.2) 0, transparent 50%), 
+                radial-gradient(at 80% 20%, hsla(88, 50%, 63%, 0.15) 0, transparent 50%);
+  }
 }
 
 /* Glass Elements - Light theme */
@@ -119,16 +121,16 @@ body::after {
   box-shadow: 0 8px 32px rgba(124, 179, 66, 0.15);
 }
 
-/* Buttons - Green gradient */
+/* Buttons - Green gradient с улучшенным контрастом */
 .btn-gradient {
-  background-image: linear-gradient(135deg, #7CB342 0%, #9CCC65 100%);
+  background-image: linear-gradient(135deg, #4A7C23 0%, #5A8C33 100%);
   color: white; 
   border: none;
   transition: all 0.3s ease;
 }
 .btn-gradient:hover {
-  background-image: linear-gradient(135deg, #558B2F 0%, #7CB342 100%);
-  box-shadow: 0 4px 12px rgba(124, 179, 66, 0.4);
+  background-image: linear-gradient(135deg, #3D6B1C 0%, #4A7C23 100%);
+  box-shadow: 0 4px 12px rgba(74, 124, 35, 0.4);
   transform: translateY(-2px);
 }
 
@@ -382,4 +384,64 @@ a:active {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ============================================
+   IMAGE LOADING ANIMATIONS
+   ============================================ */
+
+/* Shimmer effect for loading placeholders */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Fade in animation for images */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Blur to sharp loading effect */
+@keyframes blurToSharp {
+  from {
+    filter: blur(10px);
+    opacity: 0.5;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+.animate-blur-in {
+  animation: blurToSharp 0.6s ease-out forwards;
+}
+
+/* Reduced motion support for image animations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer {
+    animation: none;
+  }
+  
+  .animate-fade-in,
+  .animate-blur-in {
+    animation-duration: 0.1s;
+  }
 }

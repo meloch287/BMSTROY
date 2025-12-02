@@ -159,20 +159,29 @@ export default function Calculator() {
   const [hasDiscount, setHasDiscount] = useState(false);
 
   useEffect(() => {
-    fetch('/api/settings')
-      .then(res => res.json())
-      .then(data => {
-        if (data?.prices && Array.isArray(data.prices)) {
-          const updatedPackages = DEFAULT_PACKAGES.map((pkg, i) => ({
-            ...pkg,
-            priceWork: data.prices[i]?.price || pkg.priceWork,
-            priceMat: data.prices[i]?.materials || pkg.priceMat
-          }));
-          setPackages(updatedPackages);
-          setSelectedPack(updatedPackages[1]);
-        }
-      })
-      .catch(() => {});
+    // Откладываем fetch до idle time для улучшения TBT
+    const loadSettings = () => {
+      fetch('/api/settings')
+        .then(res => res.json())
+        .then(data => {
+          if (data?.prices && Array.isArray(data.prices)) {
+            const updatedPackages = DEFAULT_PACKAGES.map((pkg, i) => ({
+              ...pkg,
+              priceWork: data.prices[i]?.price || pkg.priceWork,
+              priceMat: data.prices[i]?.materials || pkg.priceMat
+            }));
+            setPackages(updatedPackages);
+            setSelectedPack(updatedPackages[1]);
+          }
+        })
+        .catch(() => {});
+    };
+    
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadSettings);
+    } else {
+      setTimeout(loadSettings, 100);
+    }
   }, []);
 
   const discount = hasDiscount ? 0.9 : 1;
@@ -209,7 +218,7 @@ export default function Calculator() {
                 <div className="grid grid-cols-3 gap-3">
                   {packages.map((pkg) => (
                     <div key={pkg.id} onClick={() => setSelectedPack(pkg)} className={`cursor-pointer p-4 rounded-xl border text-center transition-all relative ${selectedPack.id === pkg.id ? 'border-brand-green bg-brand-green/10 shadow-md' : 'border-gray-200 bg-white hover:border-brand-green/50'}`}>
-                      {pkg.popular && <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-green-dark text-white text-[10px] px-2 py-0.5 rounded-full font-medium">Популярный</div>}
+                      {pkg.popular && <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-brand-green-dark text-white text-xs px-2 py-0.5 rounded-full font-bold">Популярный</div>}
                       <h3 className="font-bold text-text-primary text-sm mb-1">{pkg.name}</h3>
                       <p className="text-brand-green-text font-bold text-xs">{pkg.priceWork.toLocaleString()} ₽/м²</p>
                     </div>

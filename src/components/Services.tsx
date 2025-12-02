@@ -22,8 +22,9 @@ const DEFAULT_SERVICES = [
   }
 ];
 
-const BackgroundSlider = ({ images }: { images: string[] }) => {
+const BackgroundSlider = ({ images, priority = false }: { images: string[], priority?: boolean }) => {
   const [current, setCurrent] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!images || images.length <= 1) return;
@@ -33,12 +34,20 @@ const BackgroundSlider = ({ images }: { images: string[] }) => {
     return () => clearInterval(interval);
   }, [images]);
 
-  // Fallback изображение
   const fallbackImg = "/uploads/1764611922746-1__4_.jpeg";
   const imageList = images && images.length > 0 ? images : [fallbackImg];
 
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => new Set(prev).add(index));
+  };
+
   return (
     <div className="absolute inset-0 w-full h-full z-0 select-none pointer-events-none">
+      {/* Placeholder skeleton */}
+      <div className={`absolute inset-0 bg-gray-300 transition-opacity duration-700 ${loadedImages.has(current) ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+      </div>
+      
       {imageList.map((img, index) => (
         <div 
           key={index}
@@ -48,17 +57,21 @@ const BackgroundSlider = ({ images }: { images: string[] }) => {
           <img
             src={img || fallbackImg}
             alt=""
-            loading="lazy"
+            loading={priority && index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            fetchPriority={priority && index === 0 ? "high" : "low"}
             width={800}
             height={600}
             style={{ minHeight: '100%', minWidth: '100%' }}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${loadedImages.has(index) ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => handleImageLoad(index)}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               if (!target.dataset.fallback) {
                 target.dataset.fallback = 'true';
                 target.src = fallbackImg;
               }
+              handleImageLoad(index);
             }}
           />
         </div>
@@ -70,7 +83,8 @@ const BackgroundSlider = ({ images }: { images: string[] }) => {
 };
 
 export default function Services() {
-  const [services, setServices] = useState<any[]>(DEFAULT_SERVICES);
+  const [services, setServices] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -79,9 +93,15 @@ export default function Services() {
       .then(data => { 
         if(Array.isArray(data) && data.length > 0) {
           setServices(data);
+        } else {
+          setServices(DEFAULT_SERVICES);
         }
+        setIsLoading(false);
       })
-      .catch(() => {});
+      .catch(() => {
+        setServices(DEFAULT_SERVICES);
+        setIsLoading(false);
+      });
   }, []);
 
   const getGridClass = (index: number) => {
@@ -116,28 +136,46 @@ export default function Services() {
           </div>
 
           <div className="lg:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {services.map((s, i) => (
-              <div 
-                key={s.id} 
-                className={`service-card service-card-hover group relative rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-brand-green shadow-2xl ${getGridClass(i)}`}
-              >
-                <BackgroundSlider images={s.images || []} />
-
-                <div className="relative z-10 h-full p-8 md:p-10 flex flex-col justify-end">
-                  <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
-                    <h3 className={`font-bold text-white mb-3 drop-shadow-lg ${i === 0 ? 'text-3xl' : 'text-xl'}`}>
-                      {s.title}
-                    </h3>
-                    
-                    <div className="w-10 h-1 bg-brand-green mb-3 transform scale-0 group-hover:scale-100 origin-left transition-transform duration-500"></div>
-                    
-                    <p className="text-gray-100 text-sm font-medium opacity-90 group-hover:opacity-100 leading-relaxed drop-shadow-md">
-                      {s.desc}
-                    </p>
+            {isLoading ? (
+              // Скелетон загрузки
+              [...Array(3)].map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`relative rounded-[2.5rem] overflow-hidden bg-gray-200 ${getGridClass(i)}`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+                    <div className="h-8 w-2/3 bg-white/20 rounded-lg mb-3" />
+                    <div className="h-4 w-full bg-white/10 rounded mb-2" />
+                    <div className="h-4 w-3/4 bg-white/10 rounded" />
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              services.map((s, i) => (
+                <div 
+                  key={s.id} 
+                  className={`service-card service-card-hover group relative rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-brand-green shadow-2xl ${getGridClass(i)}`}
+                >
+                  <BackgroundSlider images={s.images || []} priority={i === 0} />
+
+                  <div className="relative z-10 h-full p-8 md:p-10 flex flex-col justify-end">
+                    <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
+                      <h3 className={`font-bold text-white mb-3 drop-shadow-lg ${i === 0 ? 'text-3xl' : 'text-xl'}`}>
+                        {s.title}
+                      </h3>
+                      
+                      <div className="w-10 h-1 bg-brand-green mb-3 transform scale-0 group-hover:scale-100 origin-left transition-transform duration-500"></div>
+                      
+                      <p className="text-gray-100 text-sm font-medium opacity-90 group-hover:opacity-100 leading-relaxed drop-shadow-md">
+                        {s.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
         </div>

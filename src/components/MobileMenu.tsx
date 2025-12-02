@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, Phone, MessageCircle, ChevronDown, Home } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -21,29 +21,15 @@ export default function MobileMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const isHomePage = pathname === '/';
-  const gsapRef = useRef<typeof import('gsap').gsap | null>(null);
 
+  // Используем CSS transitions вместо GSAP для производительности
   useEffect(() => {
-    // Lazy load GSAP only when menu is first opened
-    const animate = async () => {
-      if (!gsapRef.current) {
-        const { gsap } = await import('gsap');
-        gsapRef.current = gsap;
-      }
-      const gsap = gsapRef.current;
-      
-      if (isOpen) {
-        document.body.style.overflow = 'hidden';
-        gsap.to('#mobile-menu-bg', { opacity: 1, duration: 0.3 });
-        gsap.to('#mobile-menu-content', { y: 0, duration: 0.4, ease: 'power3.out' });
-      } else {
-        document.body.style.overflow = '';
-        gsap.to('#mobile-menu-bg', { opacity: 0, duration: 0.3 });
-        gsap.to('#mobile-menu-content', { y: '100%', duration: 0.3, ease: 'power3.in' });
-      }
-    };
-    
-    animate();
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   const handleNavClick = (href: string, isPage?: boolean) => {
@@ -81,9 +67,10 @@ export default function MobileMenu() {
         {!isHomePage && (
           <Link 
             href="/"
+            aria-label="На главную"
             className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-text-primary border border-gray-300"
           >
-            <Home size={20} />
+            <Home size={20} aria-hidden="true" />
           </Link>
         )}
         <button 
@@ -94,22 +81,20 @@ export default function MobileMenu() {
         </button>
         <button 
             onClick={() => setIsOpen(true)}
+            aria-label="Открыть меню"
             className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-text-primary border border-gray-300"
         >
-            <Menu />
+            <Menu aria-hidden="true" />
         </button>
       </div>
 
       <div 
-        id="mobile-menu-bg" 
-        className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none" 
-        style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
+        className={`fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsOpen(false)}
       />
       
       <div 
-        id="mobile-menu-content"
-        className="fixed bottom-0 left-0 w-full bg-white z-[70] rounded-t-[2rem] border-t border-gray-300 transform translate-y-full shadow-2xl max-h-[85vh] overflow-y-auto"
+        className={`fixed bottom-0 left-0 w-full bg-white z-[70] rounded-t-[2rem] border-t border-gray-300 shadow-2xl max-h-[85vh] overflow-y-auto transition-transform duration-300 ease-out ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
       >
          <div className="p-6">
             <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-6"></div>
