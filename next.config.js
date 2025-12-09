@@ -23,7 +23,7 @@ const nextConfig = {
   swcMinify: true,
   // Experimental optimizations
   experimental: {
-    optimizeCss: true,
+    optimizeCss: false,
   },
   // Модульные импорты для tree-shaking
   modularizeImports: {
