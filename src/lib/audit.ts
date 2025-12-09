@@ -115,7 +115,7 @@ export function filterAuditLogs(logs: AuditLog[], filter: AuditLogFilter): Audit
     }
 
     // Filter by date range
-    const logDate = new Date(log.timestamp || log.createdAt);
+    const logDate = new Date(log.timestamp || log.createdAt || new Date());
     
     if (filter.startDate) {
       const startDate = new Date(filter.startDate);
