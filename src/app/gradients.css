@@ -1,0 +1,50 @@
+
+/* АНИМИРОВАННЫЙ ТЕКСТ - Green theme */
+.text-gradient-main {
+  background: linear-gradient(to right, #7CB342, #9CCC65, #558B2F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Mesh Gradient Background - Green tones */
+.mesh-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: radial-gradient(at 0% 0%, hsla(88, 50%, 53%, 0.15) 0, transparent 50%), 
+              radial-gradient(at 50% 0%, hsla(88, 50%, 63%, 0.12) 0, transparent 50%), 
+              radial-gradient(at 100% 0%, hsla(88, 50%, 43%, 0.15) 0, transparent 50%);
+  opacity: 0.15;
+  z-index: -1;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+/* Кнопка с зеленым градиентом */
+.btn-gradient {
+  background-image: linear-gradient(to right, #7CB342 0%, #9CCC65 51%, #7CB342 100%);
+  background-size: 200% auto;
+  color: white;
+  transition: 0.5s;
+  border: none;
+  font-weight: 600;
+}
+.btn-gradient:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(124, 179, 66, 0.4);
+}
+.btn-gradient:active {
+  background-image: linear-gradient(to right, #558B2F 0%, #7CB342 51%, #558B2F 100%);
+  transform: translateY(0);
+}

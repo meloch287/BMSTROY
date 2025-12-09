@@ -1,0 +1,156 @@
+[
+  {
+    "id": 1765234300812,
+    "createdAt": "2025-12-08T22:51:40.812Z",
+    "timestamp": "2025-12-08T22:51:40.812Z",
+    "action": "delete",
+    "collection": "booking-slots",
+    "recordId": 1765234150371,
+    "user": "Admin",
+    "details": {
+      "before": {
+        "id": 1765234150371,
+        "date": "2025-12-08",
+        "time": "12:00",
+        "status": "available",
+        "createdAt": "2025-12-08T22:49:10.371Z",
+        "updatedAt": "2025-12-08T22:49:10.371Z"
+      }
+    },
+    "date": "2025-12-08T22:51:40.812Z"
+  },
+  {
+    "id": 1765234298940,
+    "createdAt": "2025-12-08T22:51:38.940Z",
+    "timestamp": "2025-12-08T22:51:38.940Z",
+    "action": "delete",
+    "collection": "booking-slots",
+    "recordId": 1765234146779,
+    "user": "Admin",
+    "details": {
+      "before": {
+        "id": 1765234146779,
+        "date": "2025-12-08",
+        "time": "12:00",
+        "status": "available",
+        "createdAt": "2025-12-08T22:49:06.779Z",
+        "updatedAt": "2025-12-08T22:49:06.779Z"
+      }
+    },
+    "date": "2025-12-08T22:51:38.940Z"
+  },
+  {
+    "id": 1765234281198,
+    "createdAt": "2025-12-08T22:51:21.198Z",
+    "timestamp": "2025-12-08T22:51:21.198Z",
+    "action": "update",
+    "collection": "booking-slots",
+    "recordId": 1765233765672,
+    "user": "Admin",
+    "details": {
+      "before": {
+        "id": 1765233765672,
+        "date": "2025-12-09",
+        "time": "12:00",
+        "status": "booked",
+        "createdAt": "2025-12-08T22:42:45.572Z",
+        "updatedAt": "2025-12-08T22:51:19.784Z"
+      },
+      "after": {
+        "id": 1765233765672,
+        "date": "2025-12-09",
+        "time": "12:00",
+        "status": "available",
+        "createdAt": "2025-12-08T22:42:45.572Z",
+        "updatedAt": "2025-12-08T22:51:21.196Z"
+      },
+      "changes": "status, updatedAt"
+    },
+    "date": "2025-12-08T22:51:21.198Z"
+  },
+  {
+    "id": 1765234279786,
+    "createdAt": "2025-12-08T22:51:19.786Z",
+    "timestamp": "2025-12-08T22:51:19.786Z",
+    "action": "update",
+    "collection": "booking-slots",
+    "recordId": 1765233765672,
+    "user": "Admin",
+    "details": {
+      "before": {
+        "id": 1765233765672,
+        "date": "2025-12-09",
+        "time": "12:00",
+        "status": "available",
+        "createdAt": "2025-12-08T22:42:45.572Z",
+        "updatedAt": "2025-12-08T22:42:45.572Z"
+      },
+      "after": {
+        "id": 1765233765672,
+        "date": "2025-12-09",
+        "time": "12:00",
+        "status": "booked",
+        "createdAt": "2025-12-08T22:42:45.572Z",
+        "updatedAt": "2025-12-08T22:51:19.784Z"
+      },
+      "changes": "status, updatedAt"
+    },
+    "date": "2025-12-08T22:51:19.786Z"
+  },
+  {
+    "id": 1765234266250,
+    "createdAt": "2025-12-08T22:51:06.250Z",
+    "timestamp": "2025-12-08T22:51:06.250Z",
+    "action": "create",
+    "collection": "booking-slots",
+    "recordId": 0,
+    "user": "Admin",
+    "details": {
+      "after": {
+        "generatedDays": 14,
+        "slotsCount": 140
+      }
+    },
+    "date": "2025-12-08T22:51:06.250Z"
+  },
+  {
+    "id": 1765234150373,
+    "createdAt": "2025-12-08T22:49:10.373Z",
+    "timestamp": "2025-12-08T22:49:10.373Z",
+    "action": "create",
+    "collection": "booking-slots",
+    "recordId": 0,
+    "user": "Admin",
+    "details": {
+      "after": {
+        "generatedDays": 14,
+        "slotsCount": 140
+      }
+    },
+    "date": "2025-12-08T22:49:10.373Z"
+  },
+  {
+    "id": 1765234146782,
+    "createdAt": "2025-12-08T22:49:06.782Z",
+    "timestamp": "2025-12-08T22:49:06.782Z",
+    "action": "create",
+    "collection": "booking-slots",
+    "recordId": 0,
+    "user": "Admin",
+    "details": {
+      "after": {
+        "generatedDays": 14,
+        "slotsCount": 140
+      }
+    },
+    "date": "2025-12-08T22:49:06.782Z"
+  },
+  {
+    "id": 1765199529619,
+    "createdAt": "2025-12-08T13:12:09.619Z",
+    "action": "AI Генерация",
+    "details": "Тема: Арубз, Платформа: site",
+    "user": "Admin",
+    "date": "2025-12-08T13:12:09.617Z"
+  }
+]
