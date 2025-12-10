@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { ArrowUpRight, X, MapPin, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
-import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
 // Компонент для плавной загрузки изображений (Next.js Image)
 const FadeImage = ({ src, alt, className = '', ...props }: any) => {
@@ -99,36 +98,9 @@ export default function Portfolio() {
       try {
         const res = await fetch('/api/portfolio');
         const data = await res.json();
-        const apiProjects = Array.isArray(data) ? data : [];
-        if (apiProjects.length > 0) {
-          setProjects(apiProjects);
-        } else {
-          const deletedMockIds: number[] = JSON.parse(localStorage.getItem('deletedMockPortfolio') || '[]');
-          const editedMockProjects: Record<number, any> = JSON.parse(localStorage.getItem('editedMockPortfolio') || '{}');
-          const mockProjects = PORTFOLIO_PROJECTS
-            .filter(p => !deletedMockIds.includes(p.id))
-            .map(p => ({
-              ...p,
-              ...editedMockProjects[p.id],
-              cover: editedMockProjects[p.id]?.cover || p.img,
-              desc: editedMockProjects[p.id]?.description || p.desc,
-              images: editedMockProjects[p.id]?.images || [],
-            }));
-          setProjects(mockProjects);
-        }
+        setProjects(Array.isArray(data) ? data : []);
       } catch {
-        const deletedMockIds: number[] = JSON.parse(localStorage.getItem('deletedMockPortfolio') || '[]');
-        const editedMockProjects: Record<number, any> = JSON.parse(localStorage.getItem('editedMockPortfolio') || '{}');
-        const mockProjects = PORTFOLIO_PROJECTS
-          .filter(p => !deletedMockIds.includes(p.id))
-          .map(p => ({
-            ...p,
-            ...editedMockProjects[p.id],
-            cover: editedMockProjects[p.id]?.cover || p.img,
-            desc: editedMockProjects[p.id]?.description || p.desc,
-            images: editedMockProjects[p.id]?.images || [],
-          }));
-        setProjects(mockProjects);
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -163,6 +135,11 @@ export default function Portfolio() {
     setSelectedProject(null);
     setCurrentImageIndex(0);
   };
+
+  // Не показываем секцию если нет данных
+  if (!loading && projects.length === 0) {
+    return null;
+  }
 
   return (
     <section id="portfolio" className="py-24 relative z-10">

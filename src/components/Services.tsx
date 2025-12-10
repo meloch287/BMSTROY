@@ -91,15 +91,11 @@ export default function Services() {
     fetch('/api/services')
       .then(res => res.json())
       .then(data => { 
-        if(Array.isArray(data) && data.length > 0) {
-          setServices(data);
-        } else {
-          setServices(DEFAULT_SERVICES);
-        }
+        setServices(Array.isArray(data) ? data : []);
         setIsLoading(false);
       })
       .catch(() => {
-        setServices(DEFAULT_SERVICES);
+        setServices([]);
         setIsLoading(false);
       });
   }, []);
@@ -108,6 +104,11 @@ export default function Services() {
     if (index === 0) return 'md:col-span-2 h-[380px]'; 
     return 'md:col-span-1 h-[300px]';
   };
+
+  // Не показываем секцию если нет данных
+  if (!isLoading && services.length === 0) {
+    return null;
+  }
 
   return (
     <section ref={containerRef} id="services" className="py-24 relative z-10">

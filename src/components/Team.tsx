@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { TEAM_MEMBERS } from '@/data/team';
 
 // Компонент для плавной загрузки фото команды
 const FadeTeamPhoto = ({ src, name }: { src: string; name: string }) => {
@@ -32,22 +31,23 @@ export default function Team() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const deletedMockIds: number[] = JSON.parse(localStorage.getItem('deletedMockTeam') || '[]');
-    const editedMockTeam: Record<number, any> = JSON.parse(localStorage.getItem('editedMockTeam') || '{}');
-    const mockTeam = TEAM_MEMBERS.filter(t => !deletedMockIds.includes(t.id)).map(t => ({ ...t, ...editedMockTeam[t.id] }));
-
     fetch('/api/content?type=team')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) setTeam([...data, ...mockTeam]);
-        else setTeam(mockTeam);
+        if (Array.isArray(data)) setTeam(data);
+        else setTeam([]);
         setIsLoading(false);
       })
       .catch(() => {
-        setTeam(mockTeam);
+        setTeam([]);
         setIsLoading(false);
       });
   }, []);
+
+  // Не показываем секцию если нет данных
+  if (!isLoading && team.length === 0) {
+    return null;
+  }
 
   return (
     <section id="team" className="py-24 relative z-10 bg-white/40">

@@ -1,25 +1,25 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { FAQ_ITEMS } from '@/data/faq';
 
 export default function FAQ() {
   const [questions, setQuestions] = useState<any[]>([]);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   useEffect(() => {
-    const deletedMockIds: number[] = JSON.parse(localStorage.getItem('deletedMockFaq') || '[]');
-    const editedMockFaq: Record<number, any> = JSON.parse(localStorage.getItem('editedMockFaq') || '{}');
-    const mockFaq = FAQ_ITEMS.filter(f => !deletedMockIds.includes(f.id)).map(f => ({ ...f, ...editedMockFaq[f.id] }));
-
     fetch('/api/content?type=faq')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) setQuestions([...data, ...mockFaq]);
-        else setQuestions(mockFaq);
+        if (Array.isArray(data)) setQuestions(data);
+        else setQuestions([]);
       })
-      .catch(() => setQuestions(mockFaq));
+      .catch(() => setQuestions([]));
   }, []);
+
+  // Не показываем секцию если нет данных
+  if (questions.length === 0) {
+    return null;
+  }
 
   return (
     <section id="faq" className="py-24 relative z-10 bg-plaster">
