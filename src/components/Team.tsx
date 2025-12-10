@@ -34,8 +34,7 @@ export default function Team() {
     fetch('/api/content?type=team')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setTeam(data);
-        else setTeam([]);
+        setTeam(Array.isArray(data) ? data : []);
         setIsLoading(false);
       })
       .catch(() => {

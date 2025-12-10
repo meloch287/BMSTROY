@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { ArrowUpRight, X, MapPin, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
+import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
 // Компонент для плавной загрузки изображений (Next.js Image)
 const FadeImage = ({ src, alt, className = '', ...props }: any) => {
@@ -98,9 +99,14 @@ export default function Portfolio() {
       try {
         const res = await fetch('/api/portfolio');
         const data = await res.json();
-        setProjects(Array.isArray(data) ? data : []);
+        if (Array.isArray(data) && data.length > 0) {
+          setProjects(data);
+        } else {
+          // Fallback на моковые данные если API пустой
+          setProjects(PORTFOLIO_PROJECTS);
+        }
       } catch {
-        setProjects([]);
+        setProjects(PORTFOLIO_PROJECTS);
       } finally {
         setLoading(false);
       }

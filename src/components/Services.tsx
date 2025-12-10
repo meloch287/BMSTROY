@@ -91,11 +91,15 @@ export default function Services() {
     fetch('/api/services')
       .then(res => res.json())
       .then(data => { 
-        setServices(Array.isArray(data) ? data : []);
+        if (Array.isArray(data) && data.length > 0) {
+          setServices(data);
+        } else {
+          setServices(DEFAULT_SERVICES);
+        }
         setIsLoading(false);
       })
       .catch(() => {
-        setServices([]);
+        setServices(DEFAULT_SERVICES);
         setIsLoading(false);
       });
   }, []);

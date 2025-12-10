@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { FAQ_ITEMS } from '@/data/faq';
 
 export default function FAQ() {
   const [questions, setQuestions] = useState<any[]>([]);
@@ -10,10 +11,10 @@ export default function FAQ() {
     fetch('/api/content?type=faq')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setQuestions(data);
-        else setQuestions([]);
+        if (Array.isArray(data) && data.length > 0) setQuestions(data);
+        else setQuestions(FAQ_ITEMS);
       })
-      .catch(() => setQuestions([]));
+      .catch(() => setQuestions(FAQ_ITEMS));
   }, []);
 
   // Не показываем секцию если нет данных
