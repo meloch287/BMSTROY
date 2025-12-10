@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена | БМСТРОЙ</title>
+    <style>
+        /* --- Основные настройки и шрифты --- */
+        :root {
+            --color-gold: #C5A065;       /* Золотой акцент */
+            --color-gold-hover: #b08d55; /* Затемненный золотой */
+            --color-graphite: #2D2D2D;   /* Графитовый текст */
+            --color-gray-light: #F7F7F7; /* Светло-серый фон блоков */
+            --color-text-mute: #888888;  /* Вторичный текст */
+            --font-main: 'Open Sans', 'Roboto', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: #fff;
+            color: var(--color-graphite);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Шапка (упрощенная) --- */
+        header {
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eaeaea;
+            background: #fff;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-graphite);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--color-gold);
+        }
+
+        .contact-info {
+            font-size: 14px;
+            font-weight: 600;
+            display: none; /* Скрываем на мобильных */
+        }
+
+        @media (min-width: 768px) {
+            .contact-info {
+                display: block;
+            }
+        }
+
+        /* --- Основной блок 404 --- */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: var(--color-gray-light);
+            /* Фоновое изображение: замените URL на ваше фото интерьера или чертежа */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8)), 
+                              url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+
+        .content-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #eaeaea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 4px;
+            
+            /* Анимация появления */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+
+        h1 {
+            font-size: 120px;
+            line-height: 1;
+            font-weight: 900;
+            color: var(--color-gold);
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--color-graphite);
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--color-text-mute);
+            margin-bottom: 30px;
+        }
+
+        /* --- Кнопка --- */
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: var(--color-gold);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(197, 160, 101, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--color-gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 160, 101, 0.4);
+        }
+
+        /* --- Подвал --- */
+        footer {
+            padding: 20px;
+            text-align: center;
+            background: #fff;
+            border-top: 1px solid #eaeaea;
+            font-size: 12px;
+            color: var(--color-text-mute);
+        }
+
+        /* --- Анимация --- */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 80px;
+            }
+            .content-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="logo">
+            БМ<span>СТРОЙ</span>
+        </a>
+        <div class="contact-info">
+            +7 (495) 000-00-00 &nbsp;|&nbsp; info@bmstroi.ru
+        </div>
+    </header>
+
+    <main>
+        <div class="content-container">
+            <h1>404</h1>
+            <h2>Страница не найдена</h2>
+            <p>
+                Похоже, эта страница находится в стадии ремонта или была снесена. 
+                Не волнуйтесь, фундамент нашего сайта по-прежнему крепок.
+            </p>
+            <a href="/" class="btn">Вернуться на главную</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Ремонтно-строительная компания БМСТРОЙ. Все права защищены.
+    </footer>
+
+</body>
+</html>

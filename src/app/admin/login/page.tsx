@@ -26,7 +26,7 @@ export default function AdminLogin() {
         <h1 className="text-2xl font-bold text-white mb-6">Вход в Админку</h1>
         <input 
             type="password" 
-            placeholder="Пароль (admin123)" 
+            placeholder="Введите пароль" 
             className="w-full p-4 bg-[#020617] border border-white/10 rounded-xl text-white mb-4 focus:border-brand-green outline-none"
             value={pass}
             onChange={e => setPass(e.target.value)}
