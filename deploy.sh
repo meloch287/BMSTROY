@@ -17,9 +17,32 @@ npm install -g pm2
 echo "=== Клонирование проекта ==="
 mkdir -p /var/www
 cd /var/www
+
+# Сохраняем uploads и data перед обновлением
+if [ -d "bmstroy/public/uploads" ]; then
+    echo "Сохраняем загруженные файлы..."
+    cp -r bmstroy/public/uploads /tmp/bmstroy_uploads_backup
+fi
+if [ -d "bmstroy/data" ]; then
+    echo "Сохраняем данные..."
+    cp -r bmstroy/data /tmp/bmstroy_data_backup
+fi
+
 rm -rf bmstroy
 git clone https://github.com/meloch287/BMSTROY.git bmstroy
 cd bmstroy
+
+# Восстанавливаем uploads и data после клонирования
+if [ -d "/tmp/bmstroy_uploads_backup" ]; then
+    echo "Восстанавливаем загруженные файлы..."
+    cp -r /tmp/bmstroy_uploads_backup/* public/uploads/ 2>/dev/null || true
+    rm -rf /tmp/bmstroy_uploads_backup
+fi
+if [ -d "/tmp/bmstroy_data_backup" ]; then
+    echo "Восстанавливаем данные..."
+    cp -r /tmp/bmstroy_data_backup/* data/ 2>/dev/null || true
+    rm -rf /tmp/bmstroy_data_backup
+fi
 
 echo "=== Установка зависимостей ==="
 npm install

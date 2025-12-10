@@ -17,7 +17,10 @@ export async function POST(request: Request) {
     // Создаём уникальное имя файла
     const timestamp = Date.now();
     const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const fileName = `${timestamp}-${originalName}`;
+    
+    // Проверяем, не содержит ли имя уже timestamp (13 цифр в начале)
+    const hasTimestamp = /^\d{13}-/.test(originalName);
+    const fileName = hasTimestamp ? originalName : `${timestamp}-${originalName}`;
     
     // Путь для сохранения
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');

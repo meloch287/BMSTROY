@@ -119,6 +119,7 @@ export default function AdminPortfolio() {
     if (!formData.cover) { alert('Загрузите обложку проекта'); return; }
     const res = await fetch('/api/portfolio', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...formData, tags: formData.tags.split(',').map(t => t.trim()) })
     });
     const newProject = await res.json();
@@ -168,6 +169,7 @@ export default function AdminPortfolio() {
     } else {
       await fetch('/api/portfolio', {
         method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingProject.id, ...formData, cover: coverUrl, tags: tagsArray, images: formData.images })
       });
     }
