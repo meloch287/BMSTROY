@@ -5,11 +5,19 @@ import Image from 'next/image';
 import { ArrowUpRight, X, MapPin, Ruler, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PORTFOLIO_PROJECTS } from '@/data/portfolio';
 
+// Добавляем cache-busting параметр к URL изображения
+const addCacheBuster = (url: string, timestamp?: number) => {
+  if (!url || !timestamp) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${timestamp}`;
+};
+
 // Компонент для плавной загрузки изображений (Next.js Image)
-const FadeImage = ({ src, alt, className = '', ...props }: any) => {
+const FadeImage = ({ src, alt, className = '', cacheBuster, ...props }: any) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const fallbackSrc = '/uploads/1764611922746-1__4_.jpeg';
+  const imageSrc = addCacheBuster(src, cacheBuster);
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -17,7 +25,7 @@ const FadeImage = ({ src, alt, className = '', ...props }: any) => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
       </div>
       <Image
-        src={error ? fallbackSrc : src}
+        src={error ? fallbackSrc : imageSrc}
         alt={alt}
         onLoad={() => setLoaded(true)}
         onError={() => { setError(true); setLoaded(true); }}
@@ -29,16 +37,17 @@ const FadeImage = ({ src, alt, className = '', ...props }: any) => {
 };
 
 // Компонент для плавной загрузки изображений в модалке (обычный img)
-const FadeModalImage = ({ src, alt, className = '' }: { src: string; alt: string; className?: string }) => {
+const FadeModalImage = ({ src, alt, className = '', cacheBuster }: { src: string; alt: string; className?: string; cacheBuster?: number }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const fallbackSrc = '/uploads/1764611922746-1__4_.jpeg';
+  const imageSrc = addCacheBuster(src, cacheBuster);
 
   // Сбрасываем состояние при смене src
   useEffect(() => {
     setLoaded(false);
     setError(false);
-  }, [src]);
+  }, [src, cacheBuster]);
 
   return (
     <>
@@ -46,7 +55,7 @@ const FadeModalImage = ({ src, alt, className = '' }: { src: string; alt: string
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
       </div>
       <img 
-        src={error ? fallbackSrc : src} 
+        src={error ? fallbackSrc : imageSrc} 
         width={800}
         height={600}
         className={`transition-opacity duration-500 ease-out ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
@@ -182,6 +191,7 @@ export default function Portfolio() {
                   height={300}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  cacheBuster={project.coverUpdatedAt}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
@@ -236,6 +246,7 @@ export default function Portfolio() {
                                 src={images[currentImageIndex]} 
                                 className="w-full h-full object-contain" 
                                 alt={selectedProject.title}
+                                cacheBuster={selectedProject.coverUpdatedAt}
                               />
                               {images.length > 1 && (
                                 <>
@@ -321,6 +332,7 @@ export default function Portfolio() {
                                 src={images[currentImageIndex]} 
                                 className="w-full h-full object-contain" 
                                 alt={selectedProject.title}
+                                cacheBuster={selectedProject.coverUpdatedAt}
                               />
                               {images.length > 1 && (
                                 <>

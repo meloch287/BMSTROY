@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { getCollection, addToCollection, deleteCollectionItem, updateCollectionItem } from '@/lib/db';
 
 export async function GET() {
-  return NextResponse.json(getCollection('portfolio'));
+  return NextResponse.json(getCollection('portfolio'), {
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+    },
+  });
 }
 
 export async function POST(request: Request) {
@@ -16,6 +20,10 @@ export async function PUT(request: Request) {
   const { id, ...updates } = body;
   if (!id) {
     return NextResponse.json({ error: 'No ID' }, { status: 400 });
+  }
+  // Добавляем timestamp для сброса кэша изображений
+  if (updates.cover) {
+    updates.coverUpdatedAt = Date.now();
   }
   const updated = updateCollectionItem('portfolio', Number(id), updates);
   if (updated) {

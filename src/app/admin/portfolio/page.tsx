@@ -161,10 +161,11 @@ export default function AdminPortfolio() {
     e.preventDefault();
     const coverUrl = formData.cover || editingProject.cover || editingProject.img;
     const tagsArray = formData.tags.split(',').map(t => t.trim());
+    const coverUpdatedAt = Date.now(); // Для сброса кэша изображений
     
     if (editingProject.isMock) {
       const editedMockProjects: Record<number, any> = JSON.parse(localStorage.getItem('editedMockPortfolio') || '{}');
-      editedMockProjects[editingProject.id] = { ...formData, cover: coverUrl, tags: tagsArray, images: formData.images };
+      editedMockProjects[editingProject.id] = { ...formData, cover: coverUrl, tags: tagsArray, images: formData.images, coverUpdatedAt };
       localStorage.setItem('editedMockPortfolio', JSON.stringify(editedMockProjects));
     } else {
       await fetch('/api/portfolio', {
@@ -173,7 +174,7 @@ export default function AdminPortfolio() {
         body: JSON.stringify({ id: editingProject.id, ...formData, cover: coverUrl, tags: tagsArray, images: formData.images })
       });
     }
-    setProjects(prev => prev.map(p => p.id === editingProject.id ? { ...p, ...formData, cover: coverUrl, tags: tagsArray, images: formData.images } : p));
+    setProjects(prev => prev.map(p => p.id === editingProject.id ? { ...p, ...formData, cover: coverUrl, tags: tagsArray, images: formData.images, coverUpdatedAt } : p));
     setEditingProject(null);
     setFormData({ title: '', area: '', location: '', description: '', tags: 'Премиум', cover: '', images: [] });
   };
